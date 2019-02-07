@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='physense_emu',  # Required
-    version='0.0.2',  # Required
+    version='2.0.0',  # Required
     description='A sample Python project',  # Optional
     long_description=long_description,  # Optional
     long_description_content_type='text/markdown',  # Optional (see note above)
@@ -20,7 +20,6 @@ setup(
     author_email='jsilver5@dtcc.edu',  # Optional
     classifiers=[  # Optional
         'Development Status :: 3 - Alpha',
-        'Intended Audience :: ITN160',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',

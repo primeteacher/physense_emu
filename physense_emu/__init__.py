@@ -1,14 +1,13 @@
-import socket  # Import socket module
-import subprocess
+# Import modules
+import socket
+import time
+import math
 
 vals = []
 
 class Sensor:
 
     def __init__(self):
-        #start simulator and set a wait for it to load then initiate the rest of the file
-        subprocess.Popen("physense_sim")
-
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Create a socket object
         self.host = socket.gethostname()  # Get local machine name
         self.port = 12345  # Reserve a port for your service.
@@ -17,6 +16,8 @@ class Sensor:
         self.r = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.rport = 6666
         self.r.bind((self.host, self.rport))
+
+        self.start = time.time()
 
 
     #send data
@@ -32,6 +33,8 @@ class Sensor:
 
     def input(self, phyObj):
         self.readValues()
+
+
 
         if(phyObj == "Button_1" and vals[4] == "1"):
            return "pressed"
@@ -55,7 +58,20 @@ class Sensor:
            return int(vals[1] + vals[2] + vals[3])
 
     def readValues(self):
+        # get time difference of last reading
+        curr = time.time()
+        diff = curr - self.start
+        self.start = curr
+        diff = math.floor(diff)
+
+        # use time to wipe the buffer during the sleep
+        while(diff > 1):
+            temp, a = self.r.recvfrom(1024)
+            diff -= 1
+
+
         temp, a = self.r.recvfrom(1024)  # once it receives this value that's it. so store in variable
+
         self.s.sendto(("test").encode('utf-8'), (self.host, self.port))
 
         temp = str(temp)
